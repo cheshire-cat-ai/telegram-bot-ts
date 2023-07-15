@@ -17,7 +17,7 @@ const cat = new CatClient({
 
 bot.command('quit', async ctx => {
     if (ctx.chat.type === 'private') return
-    const userStatus = (await ctx.getChatMember(ctx.message.from.id)).status
+    const userStatus = (await ctx.getChatMember(ctx.from.id)).status
     if (userStatus != 'administrator' && userStatus != 'creator') {
         ctx.reply('**You must be an administrator of the group!**');
     } else {
@@ -25,12 +25,14 @@ bot.command('quit', async ctx => {
     }
 });
 
-bot.start(ctx => ctx.reply('Welcome dear user!'));
+bot.start(ctx => ctx.reply(`__Welcome dear **${ctx.from.username}**!__`));
 
 bot.help(ctx => ctx.reply('How can I help you?'));
 
 bot.on(message('text'), ctx => {
-    cat.send(ctx.message.text);
+    const msg = ctx.message.text;
+    if (msg.startsWith('/')) return;
+    cat.send(msg);
     cat.onMessage(res => ctx.reply(res.content));
 });
 
