@@ -16,7 +16,13 @@ const cat = new CatClient({
 })
 
 bot.command('quit', async ctx => {
-    await ctx.leaveChat();
+    if (ctx.chat.type === 'private') return
+    const userStatus = (await ctx.getChatMember(ctx.message.from.id)).status
+    if (userStatus != 'administrator' && userStatus != 'creator') {
+        ctx.reply('**You must be an administrator of the group!**');
+    } else {
+        ctx.leaveChat();
+    }
 });
 
 bot.start(ctx => ctx.reply('Welcome dear user!'));
