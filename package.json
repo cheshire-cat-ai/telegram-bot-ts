@@ -1,0 +1,50 @@
+{
+  "name": "ccat-telegram-bot-ts",
+  "version": "0.0.1",
+  "description": "Telegram Bot to communicate with the Cheshire Cat AI with rate limits",
+  "author": "zAlweNy26",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "nodemon --watch 'src/**/*' --ext ts,json --exec npm run start",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "start": "ts-node src/index.ts"
+  },
+  "keywords": [
+    "ccat",
+    "cheshire-cat",
+    "api",
+    "telegram",
+    "client",
+    "fastapi",
+    "openapi",
+    "ai",
+    "llm",
+    "chat",
+    "bot"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "ccat-api": "^0.5.0",
+    "clear": "^0.1.0",
+    "dotenv": "^16.3.1",
+    "telegraf": "^4.12.2"
+  },
+  "devDependencies": {
+    "@types/clear": "^0.1.2",
+    "@types/node": "^20.4.2",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
+  }
+}

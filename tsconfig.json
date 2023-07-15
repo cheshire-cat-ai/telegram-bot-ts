@@ -1,0 +1,35 @@
+{
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": [
+    ".eslintrc.json",
+    "globals.d.ts",
+    "src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "useDefineForClassFields": true,
+    "lib": [
+      "DOM", 
+      "ESNext"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@commands/*": ["./src/commands/*"],
+      "@utils/*": ["./src/utils/*"],
+    },
+    "rootDir": ".",
+    "target": "ESNext",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true
+  }
+}

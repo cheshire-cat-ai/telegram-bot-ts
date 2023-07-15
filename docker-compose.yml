@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  bot:
+    container_name: ccat-telegram-bot
+    build: .
+    image: ccat-telegram-bot
+    ports:
+      - "3000:80"
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN:-}
+      - CLIENT_ID=${CLIENT_ID:-}
+    restart: unless-stopped
+    volumes:
+      - ./:/bot/
