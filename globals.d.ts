@@ -4,6 +4,7 @@ declare global {
             BOT_TOKEN: string;
             URL: string;
             PORT: string;
+            AUTH_KEY: string;
         }
     }
 }

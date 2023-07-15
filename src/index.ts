@@ -12,6 +12,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN ?? '');
 const cat = new CatClient({
 	baseUrl: process.env.URL ?? 'localhost',
 	port: process.env.PORT,
+    authKey: process.env.AUTH_KEY,
 })
 
 bot.command('quit', async ctx => {
