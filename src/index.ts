@@ -7,10 +7,18 @@ import { message } from 'telegraf/filters';
 clear();
 dotenv.config();
 
-const bot = new Telegraf(process.env.BOT_TOKEN ?? '');
+if (!process.env.BOT_TOKEN) {
+    throw new Error('A Bot token must be set to make it work!')
+}
+
+if (!process.env.URL) {
+    throw new Error('A base URL to which connect the Cheshire Cat must be set to make it work!')
+}
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const cat = new CatClient({
-	baseUrl: process.env.URL ?? 'localhost',
+	baseUrl: process.env.URL,
 	port: process.env.PORT,
     authKey: process.env.AUTH_KEY,
 })
