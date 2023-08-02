@@ -5,6 +5,7 @@ declare global {
             URL: string | undefined
             PORT: string | undefined
             AUTH_KEY: string | undefined
+            CHAT_ACCESS: string | undefined
         }
     }
 }

@@ -3,7 +3,8 @@ import clear from 'clear'
 import dotenv from 'dotenv'
 import { Telegraf } from 'telegraf'
 import { message } from 'telegraf/filters'
-import { isMentioned, isReplied } from '@utils/helpers'
+import { isMentioned, isReplied, getChatAccess } from '@utils/helpers'
+import { ChatType } from '@utils/enums'
 
 clear()
 dotenv.config()
@@ -23,6 +24,8 @@ const cat = new CatClient({
 	port: process.env.PORT,
     authKey: process.env.AUTH_KEY,
 })
+
+const chatAccess = getChatAccess(process.env.CHAT_ACCESS)
 
 bot.command('quit', async ctx => {
     if (ctx.chat.type === 'private') return
@@ -56,8 +59,15 @@ bot.on(message('text'), ctx => {
 
     if (msg.startsWith('/')) return
 
+    const chatType = ctx.chat.type as ChatType
+
+    if (!chatAccess.includes(chatType)) return
+
+    const botReplied = isReplied(ctx.message, bot.botInfo?.id)
     const botMention = isMentioned(ctx.message, bot.botInfo?.username)
-    if (!botMention && !isReplied(ctx.message, bot.botInfo?.id)) return;
+    const isGroupOrSuper = [ChatType.Group, ChatType.SuperGroup].includes(chatType)
+
+    if ((isGroupOrSuper && (!botReplied && !botMention))) return
 
     cat.send(msg.replace(botMention, ''))
     cat.onMessage(res => ctx.reply(res.content))
