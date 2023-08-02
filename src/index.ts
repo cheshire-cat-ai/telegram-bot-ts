@@ -56,8 +56,9 @@ bot.on(message('text'), ctx => {
 
     if (msg.startsWith('/')) return
 
+    const isPrivateChat = ctx.chat.type == 'private'
     const botMention = isMentioned(ctx.message, bot.botInfo?.username)
-    if (!botMention && !isReplied(ctx.message, bot.botInfo?.id)) return;
+    if (!isPrivateChat && !botMention && !isReplied(ctx.message, bot.botInfo?.id)) return;
 
     cat.send(msg.replace(botMention, ''))
     cat.onMessage(res => ctx.reply(res.content))
