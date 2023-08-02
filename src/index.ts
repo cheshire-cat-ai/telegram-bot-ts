@@ -3,7 +3,8 @@ import clear from 'clear'
 import dotenv from 'dotenv'
 import { Telegraf } from 'telegraf'
 import { message } from 'telegraf/filters'
-import { isMentioned, isReplied } from '@utils/helpers'
+import { isMentioned, isReplied, getChatAccesses } from '@utils/helpers'
+import { ChatType } from '@utils/enums'
 
 clear()
 dotenv.config()
@@ -24,7 +25,7 @@ const cat = new CatClient({
     authKey: process.env.AUTH_KEY,
 })
 
-const alwaysReplyInPrivateChat = JSON.parse(process.env.ALWAYS_REPLY_IN_PRIVATE_CHAT || 'false')
+const CHAT_ACCESSES = getChatAccesses(process.env.CHAT_ACCESSES)
 
 bot.command('quit', async ctx => {
     if (ctx.chat.type === 'private') return
@@ -58,11 +59,14 @@ bot.on(message('text'), ctx => {
 
     if (msg.startsWith('/')) return
 
-    const isPrivateChat = ctx.chat.type == 'private'
-    const botMention = isMentioned(ctx.message, bot.botInfo?.username)
-    const replyBecauseIsPrivateChat = isPrivateChat && alwaysReplyInPrivateChat
+    const chatType = ctx.chat.type as ChatType
 
-    if (!replyBecauseIsPrivateChat && !botMention && !isReplied(ctx.message, bot.botInfo?.id)) return;
+    if (!CHAT_ACCESSES.includes(chatType)) return
+
+    const botReplied = isReplied(ctx.message, bot.botInfo?.id)
+    const botMention = isMentioned(ctx.message, bot.botInfo?.username)
+    const isGroupOrSupergroupChat = [ChatType.Group, ChatType.Supergroup].includes(chatType)
+    if (isGroupOrSupergroupChat && (!botReplied && !botMention)) return
 
     cat.send(msg.replace(botMention, ''))
     cat.onMessage(res => ctx.reply(res.content))
