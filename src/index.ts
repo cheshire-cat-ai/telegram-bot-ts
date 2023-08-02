@@ -21,8 +21,6 @@ if (!URL) {
 
 const bot = new Telegraf(BOT_TOKEN)
 
-console.log('Port:', typeof PORT, PORT ? parseInt(PORT) : 'niente')
-
 const cat = new CatClient({
 	baseUrl: URL,
 	port: PORT ? parseInt(PORT) : undefined,
