@@ -30,21 +30,21 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "ccat-api": "^0.5.0",
+    "ccat-api": "^0.6.2",
     "clear": "^0.1.0",
     "dotenv": "^16.3.1",
     "telegraf": "^4.12.2"
   },
   "devDependencies": {
     "@types/clear": "^0.1.2",
-    "@types/node": "^20.4.2",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.45.0",
+    "@types/node": "^20.4.6",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
+    "eslint": "^8.46.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "tsup": "^7.1.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   }
 }

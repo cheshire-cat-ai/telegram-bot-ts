@@ -9,23 +9,27 @@ import { ChatType } from '@utils/enums'
 clear()
 dotenv.config()
 
-if (!process.env.BOT_TOKEN) {
+const { BOT_TOKEN, URL, PORT, AUTH_KEY, CHAT_ACCESS } = process.env
+
+if (!BOT_TOKEN) {
     throw new Error('A Bot token must be set to make it work!')
 }
 
-if (!process.env.URL) {
+if (!URL) {
     throw new Error('A base URL to which connect the Cheshire Cat must be set to make it work!')
 }
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(BOT_TOKEN)
+
+console.log('Port:', typeof PORT, PORT ? parseInt(PORT) : 'niente')
 
 const cat = new CatClient({
-	baseUrl: process.env.URL,
-	port: process.env.PORT,
-    authKey: process.env.AUTH_KEY,
+	baseUrl: URL,
+	port: PORT ? parseInt(PORT) : undefined,
+    authKey: AUTH_KEY,
 })
 
-const chatAccess = getChatAccess(process.env.CHAT_ACCESS)
+const chatAccess = getChatAccess(CHAT_ACCESS)
 
 bot.command('quit', async ctx => {
     if (ctx.chat.type === 'private') return
