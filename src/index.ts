@@ -24,6 +24,8 @@ const cat = new CatClient({
     authKey: process.env.AUTH_KEY,
 })
 
+const alwaysReplyInPrivateChat = JSON.parse(process.env.ALWAYS_REPLY_IN_PRIVATE_CHAT || 'false')
+
 bot.command('quit', async ctx => {
     if (ctx.chat.type === 'private') return
     const userStatus = (await ctx.getChatMember(ctx.from.id)).status
@@ -58,7 +60,9 @@ bot.on(message('text'), ctx => {
 
     const isPrivateChat = ctx.chat.type == 'private'
     const botMention = isMentioned(ctx.message, bot.botInfo?.username)
-    if (!isPrivateChat && !botMention && !isReplied(ctx.message, bot.botInfo?.id)) return;
+    const replyBecauseIsPrivateChat = isPrivateChat && alwaysReplyInPrivateChat
+
+    if (!replyBecauseIsPrivateChat && !botMention && !isReplied(ctx.message, bot.botInfo?.id)) return;
 
     cat.send(msg.replace(botMention, ''))
     cat.onMessage(res => ctx.reply(res.content))
