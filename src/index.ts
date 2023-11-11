@@ -1,4 +1,4 @@
-import { CatClient, AcceptedFileTypes, AcceptedFileType } from 'ccat-api'
+import { CatClient } from 'ccat-api'
 import clear from 'clear'
 import dotenv from 'dotenv'
 import { Telegraf } from 'telegraf'
@@ -69,7 +69,7 @@ bot.on(message('text'), ctx => {
     const botMention = isMentioned(ctx.message, bot.botInfo?.username)
     const isGroupOrSuper = [ChatType.Group, ChatType.SuperGroup].includes(chatType)
 
-    if ((isGroupOrSuper && (!botReplied && !botMention))) return
+    if (isGroupOrSuper && (!botReplied && !botMention)) return
 
     cat.send(msg.replace(botMention, ''))
     cat.onMessage(res => ctx.reply(res.content))
@@ -77,7 +77,12 @@ bot.on(message('text'), ctx => {
 
 bot.on(message('document'), async ctx => {
     const document = ctx.message.document
-    if (!AcceptedFileTypes.includes(document.mime_type as AcceptedFileType)) {
+    const acceptedTypes = (await cat.api?.rabbitHole.getAllowedMimetypes())?.allowed
+    if (!acceptedTypes || !document.mime_type) {
+        ctx.replyWithMarkdownV2('*Unable to get the allowed mimetypes\\!*')
+        return
+    }
+    if (!acceptedTypes.includes(document.mime_type)) {
         ctx.replyWithMarkdownV2(`*The mime type \`${document.mime_type}\` is not supported\\!*`)
         return
     }
